@@ -15,6 +15,7 @@ node[:packages].each do |package|
     
   package package[:name] do 
     version package[:version]
+    override_hardmask true
     action :install 
   end
 
