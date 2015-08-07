@@ -4,6 +4,9 @@ require 'pp'
 # Recipe:: default
 #
 
+# Install memcached_custom.yml on app instances
+memcached_instance = node['utility_instances'].find { |instance| instance['name'] == 'memcached' }
+
 node[:applications].each do |app_name,data|
   user = node[:users].first
 
@@ -16,10 +19,15 @@ case node[:instance_role]
      mode 0744
      variables({
          :app_name => app_name,
-         :server_names => node[:members]
+         :server_names => [memcached_instance]
      })
    end
+ end
+end
 
+# Install memcached and setup a monitrc file on the memcached utility instance
+if ['util'].include?(node[:instance_role])
+  if node[:name] == 'memcached'
    template "/etc/conf.d/memcached" do
      owner 'root'
      group 'root'
@@ -28,5 +36,13 @@ case node[:instance_role]
      variables :memusage => 64,
                :port     => 11211
    end
- end
+
+   template "/etc/monit.d/memcached.monitrc" do
+     owner 'root'
+     group 'root'
+     mode 0644
+     source "memcached.monitrc.erb"
+     variables :pidfile => '/var/run/memcached/memcached-11211.pid'
+   end
+  end
 end
