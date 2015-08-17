@@ -1,0 +1,12 @@
+/var/log/engineyard/apps/*/*.log {
+    rotate 72
+    compress
+    size 1
+    nodateext
+
+    missingok
+    notifempty
+    sharedscripts
+    extension gz
+    copytruncate
+}

@@ -1,12 +1,14 @@
-/var/log/engineyard/nginx/*.log /var/log/engineyard/nginx/error_log {
-    rotate 30
-    size 100M
+/var/log/engineyard/nginx/*log {
+    rotate 72
     compress
+    size 1
+    nodateext
+
     missingok
     notifempty
     sharedscripts
     extension gz
-    
+    copytruncate
       postrotate
           [ ! -f /var/run/nginx.pid ] || kill -USR1 `cat /var/run/nginx.pid`
 
