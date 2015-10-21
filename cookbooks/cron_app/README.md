@@ -7,7 +7,7 @@ This cookbook automates the installation of cron jobs on Engine Yard Cloud.  The
 
 Specifics of Usage
 ------------------
-Add your cron jobs as an array of hashes to attributes/cron.rb and `include_recipe 'cron_app'` in the main cookbook recipe.  You must specify a name, time, command and instance name.  The time value must be the full string containing minute, hour, day, month and weekday separated by spaces (eg: '* * * * *').
+Add your cron jobs as an array of hashes to attributes/cron.rb and `include_recipe 'cron_app'` in the main cookbook recipe.  You must specify a name, time and command.  The time value must be the full string containing minute, hour, day, month and weekday separated by spaces (eg: '* * * * *').
 
 Example Configuration:
 
