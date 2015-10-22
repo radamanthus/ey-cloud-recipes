@@ -3,7 +3,7 @@ Custom Nginx App Config Cookbook for Engine Yard Cloud
 
 Overview
 --------
-This cookbook creates a custom Nginx app configuration in `/etc/nginx/servers/`.
+This cookbook creates a custom Nginx/Passenger app configuration in `/etc/nginx/servers/`.
 
 Specifics of Usage
 ------------------
@@ -16,3 +16,7 @@ Customize `templates/default/myapp.conf.erb` as you see fit. Take note that the 
 ` should be consistent with what you specified for `Framework Environment` in the Engine Yard Cloud dashboard (https://support.cloud.engineyard.com/hc/en-us/articles/205407628-Set-Up-Your-Application-and-Environment).
 
 On `templates/default/myapp.conf.erb`, change `listen 81;` to `listen 80;` if you're running a solo environment.
+
+Notes
+-----
+This has been tested for an Nginx/Passenger application. Please modify `templates/default/myapp.conf.erb` accordingly if you're running Unicorn.
