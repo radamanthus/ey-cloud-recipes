@@ -31,3 +31,43 @@ If you connect to the third party via HTTP then you can run tinyproxy on one ins
   ```
 
 ## Usage
+
+This custom chef recipe creates `/data/app_name/shared/config/tinyproxy.yml`, which is automatically linked to `/data/app_name/current/config/tinyproxy.yml`.
+
+### Rails Usage
+
+You can parse the tinyproxy.yml file to determine the hostname and port used by tinyproxy like this:
+
+```
+yaml_file = File.join(Rails.root || current_path, 'config', 'tinyproxy.yml')
+tinyproxy_config = YAML::load(ERB.new(IO.read(yaml_file)).result)
+tinyproxy_host = tinyproxy_config[:hostname] || 'localhost'
+tinyproxy_port = tinyproxy_config[:port] || '8888'
+```
+
+Once that is done, you can call Net::HTTP like this:
+
+```
+Net::HTTP.new(target_url, nil, tinyproxy_host, tinyproxy_port).start { |http|
+  http.get(target_url, '')
+}
+```
+
+## Test Cases
+
+This custom chef recipe has been verified using these test cases:
+
+```
+A. Install tinyproxy on app_master
+  A1. tinyproxy should be running on app_master
+  A2. tinyproxy should not be running on any other instance
+  A3. /data/app_name/shared/config/tinyproxy.yml should have the correct host and port settings
+  A4. Initiate a takeover. tinyproxy should be running on the new app_master
+
+B. Install tinyproxy on util instance named tinyproxy
+  B1. tinyproxy should be running on tinyproxy
+  B2. tinyproxy should not be running on any other instance
+  B3. /data/app_name/shared/config/tinyproxy.yml should have the correct host and port settings
+```
+
+If you encounter a problem, please open a Github issue and metion which of these cases failed.
