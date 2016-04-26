@@ -1,0 +1,4 @@
+location = /diresource/resource.png {
+  include /etc/nginx/fastcgi_params;
+  fastcgi_pass 127.0.0.1:<%= @port %>;
+}
