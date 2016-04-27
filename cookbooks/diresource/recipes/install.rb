@@ -37,12 +37,6 @@ template "/etc/init.d/diresource" do
   })
 end
 
-# This does not work on Gentoo 12.11. Maybe https://docs.chef.io/resource_service.html is not yet supported in Chef 10.6?
-# Consider revisiting this in Gentoo 2016 stack which uses Chef 12
-#service 'diresource' do
-#  action :start
-#end
-
 execute "diresource_start_on_boot" do
   command "rc-update add diresource default"
 end
